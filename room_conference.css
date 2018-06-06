@@ -1,0 +1,10 @@
+body {
+    background-image: url("../images/background-intranet.jpg");
+    background-repeat: no-repeat;
+    background-position: center 120px;
+}
+
+* {
+    font-family: Arial, Sans-Serif;
+    font-size: 13px;
+}
