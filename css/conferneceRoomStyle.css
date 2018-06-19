@@ -1,0 +1,59 @@
+body {
+
+	background-image: url("../images/background-intranet.jpg");
+	background-repeat: no-repeat;
+	background-position: center 120px;
+	
+}
+
+#Conference_Menu {
+
+  margin: 3% 2% 3% 2%;
+
+}
+
+#Conference_Editor, #Conference_newRoom, #Conference_deleteRoom{
+
+  position: relative;
+  margin: 3% 2% 3% 2%;
+  display: none;
+
+}
+
+#Dhbw_Logo {
+
+  z-index: -10;
+  float: right;
+
+}
+
+#Intranet_Background {
+
+  position: absolute;
+  z-index: -100;
+  width: 100%;
+
+}
+
+.col-sm-3 .card {
+
+  position: relative;
+  min-height: 190px;
+  padding-bottom: 9%;
+
+}
+
+.btn-bottom {
+
+  position: absolute;
+  bottom: 5%;
+
+}
+
+.jumbotron {
+
+  margin-bottom: 0 !important;
+  padding: 3% 3% 3% 3% !important;
+
+
+}
