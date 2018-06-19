@@ -1,0 +1,209 @@
+<!--
+          Team: Marcel, Raphael, Patricia, Anselm
+          Modul: ConfernceRoom
+          date: 06.06.18
+ -->
+ <%@ page contentType="text/html; charset=UTF-8" %>
+
+ <%@ page import="com.chimerasys.User" %>
+
+ <%
+
+     User u = (User) session.getAttribute("user");
+
+     if (u == null) {
+
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+
+     }
+
+ %>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Conference Room Manager!</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/conferneceRoomStyle.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+    var urljson ="http://h2669567.stratoserver.net:8080/intranet/jsonevents.jsp";
+
+  //    var urljson ="jsonevents.jsp"
+    $("div#Eingabe").toggle();
+    $(document).ready(function(){
+    $.get(urljson,function(data,status) {
+        if(status == "success") {
+            Daten = data.docs;
+            console.log(Daten);
+
+        }
+    }, "json").fail(FehlerdatenLaden);
+    });
+
+    function FehlerdatenLaden () {
+      $("#Alert_Box").html("<div class='alert alert-danger'><strong>Daten wurden nicht geladen!</strong></div>");
+    }
+    </script>
+</head>
+
+<body>
+
+<div id='start'>
+  <div class="jumbotron">
+    <img src='images/dhbw_mosbach_2014.gif' id='Dhbw_Logo' alt='DHBW Logo'/>
+    <h1 class="display-5">Konferenzraum</h1>
+    <p class="lead">Hier können die Konferenzräume erstellt, verwaltet und gelöscht werden</p>
+    <hr class="my-5">
+    <p>In der App Kalender finden sie alle Raumreservierungen!</p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="firmenkalender.html" role="button">Kalender anzeigen</a>
+    </p>
+  </div>
+<!--
+<img src='images\background-intranet.jpg' id='Intranet_Background'/>
+-->
+
+<div id='Alert_Box'>
+</div>
+
+<div id='Conference_Menu'>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Raum buchen </h5>
+          <br>
+          <br>
+          <p class="card-text">Reservieren sie einen Raum!</p>
+          <a href="#" class="btn btn-primary btn-bottom" onclick="showFormular('Conference_Editor')">Buchen</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Raumreservierung editieren </h5>
+          <br>
+          <br>
+          <p class="card-text">Bearbeiten sie ihre Raumreservierung!</p>
+          <a href="#" class="btn btn-primary btn-bottom" onclick="showFormular('Conference_Editor')">Bearbeiten</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Raumreservierung löschen </h5>
+          <br>
+          <br>
+          <p class="card-text">Löschen sie ihre Raumreservierung!</p>
+          <a href="#" class="btn btn-primary btn-bottom" onclick="showFormular('Conference_deleteRoom')">Löschen</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  function showFormular(editor) {
+      var current = document.getElementById(editor);
+      document.getElementById('Conference_Editor').style.display = "none";
+      document.getElementById('Conference_deleteRoom').style.display = "none";
+      current.style.display = "block";
+      $('html:not(:animated), body:not(:animated)').animate({
+            scrollTop: $(current).offset().top
+        }, 500);
+  }
+
+</script>
+
+
+<div id='Conference_Editor'>
+  <form>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="inputTitle">Betreff</label>
+      <input type="text" class="form-control" id="inputTitle1" placeholder="Name">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="inputStartTime">Startzeit</label>
+
+
+                          <div class="well">
+                    <div id="datetimepicker1" class="input-append date">
+                    <input data-format="dd/MM/yyyy hh:mm:ss" type="text"></input>
+                    <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                    </i>
+                    </span>
+                    </div>
+                    </div>
+                    <script type="text/javascript">
+                    $(function() {
+                    $('#datetimepicker1').datetimepicker({
+                    language: 'pt-BR'
+                    });
+                    });
+                    </script>
+
+
+      <input type="text" class="form-control" id="inputStartTime1" placeholder="Zeit auswählen">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputEndime">Endzeit</label>
+      <input type="text" class="form-control" id="inputEndTime2" placeholder="Zeit auswählen">
+    </div>
+  </div>
+  <div class="form-row">
+    <label for="inputComment">Kommentar</label>
+    <input type="text" class="form-control" id="inputDescp1" placeholder="Name">
+  </div>
+  <div class="form-row">
+    <div class="col-auto my-1">
+      <label for="exampleFormControlSelect2">Tags</label>
+      <select multiple class="form-control" id="exampleFormControlSelect2">
+          <option selected>Choose...</option>
+          <option value="1">Raum U1.143</option>
+          <option value="2">Raum E2.278</option>
+          <option value="3">Raum OG1.1126</option>
+        </select>
+      </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Raum BUCHEN</button>
+  </form>
+  </div>
+  <div id='Conference_deleteRoom'>
+    <form>
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="inputRaum">Raumname</label>
+        <input type="text" class="form-control" id="inputRaum4" placeholder="Raum">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Raum LÖSCHEN!</button>
+    </form>
+  </div>
+
+</div>
+</body>
+
+</html>
