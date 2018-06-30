@@ -1,8 +1,7 @@
-var urljson = "jsonevents.jsp";
 $("div#Eingabe").toggle();
-/* Ajax zum daten runterladen */
+/* Ajax zum daten runterladen der JsonEvents 
 $(document).ready(function () {
-    $.get(urljson, function (data, status) {
+    $.get("jsonevents.jsp", function (data, status) {
         if (this.status == "success" && this.readyState == 4) {
             Daten = data.docs;
 
@@ -11,19 +10,47 @@ $(document).ready(function () {
         }
     }, "json").fail(FehlerdatenLaden());
 });
+
+/* Ajax zum daten runterladen der JsonTags 
+$(document).ready(function () {
+    $.get("jsontags.jsp", function (data, status) {
+        if (this.status == "success" && this.readyState == 4) {
+            Daten = data.docs;
+
+            console.log(Daten);
+            document.getElementById('alert').innerHTML = "<div class='alert alert-success'>Erfolgreich!</div>";
+        }
+    }, "json").fail(FehlerdatenLaden());
+});
+*/
+
+$(document).ready(function () {
+    fillStandardFormular();
+});
+
+/* Ajax zum daten runterladen der JsonEvents */
+function loadData(jspFile) {
+    $(document).ready(function () {
+        $.get(jspFile, function (data, status) {
+            if (this.status == "success" && this.readyState == 4) {
+                return data.docs;
+            }
+        }, "json").fail(FehlerdatenLaden());
+    });
+}
+
 /* Anzeige, wenn das Laden fehlgeschlagen ist*/
 function FehlerdatenLaden() {
     document.getElementById('alert').innerHTML = "<div class='alert alert-danger'><strong>Fehlgeschlagen!</strong> Herunterladen fehlgeschlagen.</div>";
 }
-/* TO DO
-/* Rein laden der Tags in das Formular 
+/* Rein laden der Tags in das Formular */
 
 function fillStandardFormular() {
-    for(tags : )
-        document.getElementById("tags").innerHTML += "<option> tags </option>";
+    for(var tags in loadData("jsontags.jsp")) {
+        document.getElementById("tags").innerHTML += "<option>" + tags +"</option>";
     }
 }
-*/
+
 /*Update der jsonevents.jsp*/
 function eventUpdate() {
     var betreff = $("#betreff").val();
@@ -32,12 +59,13 @@ function eventUpdate() {
     var commentar = $("#commentar").val();
     var location = $("#location").val();
     var url = $("#url").val();
+    //var tags = $("#tags").val();
     var serverAction = "newevent";
     $.get("update.jsp", {
+        /*Tagparameter in der update.jsp für newevent nicht gefunden */
         action: serverAction, name: betreff, dtStart: zeitAnf, dtEnd: zeitEnd, location: location,
         comment: commentar, url: url
     }, function (data) {
-        consol.log(data);
         if (!hasValue(data, status) && data.status.toLowerCase() == 'ok') {
             roomBookingSucces();
         } else {
