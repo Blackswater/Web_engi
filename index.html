@@ -3,6 +3,7 @@
           Modul: ConfernceRoom Modul
           date: 06.06.18
           Nur zur Verwendung für das Modul: Web Engineering I Programmieraufgabe
+          Zusatzfunktion: Responsiv
  -->
 <%@ page contentType="text/html; charset=UTF-8" %>
 
@@ -45,6 +46,9 @@
 
         <script src="js/bootstrap-datetimepicker.js"></script>
         <script src="js/roomconference.js"></script>
+        <script src="js/locales/bootstrap-datetimepicker.de.js"></script>
+
+        
       </head>
 
       <body>
@@ -61,7 +65,7 @@
             </p>
           </div>
 
-          <div class="alert alert-danger" id="alert" ></div>
+          <div id="alert" ></div>
 
           <!-- Kacheln zum buchen, editieren löschen eines Raumes-->
           <div id='Conference_Menu'>
@@ -122,7 +126,7 @@
                   <input type="text" class="form-control" id="betreff" placeholder="Veranstaltung" required>
                 </div>                           
                 <div class="col-auto my-1">
-                  <label for="tags">Raum</label>
+                  <label for="tags">Tag</label>
                   <select multiple class="form-control" id="tags">
                     
                     </select>
@@ -138,7 +142,7 @@
                 <div class="from-group col-md-3">
                   <label for="zeitAnf">Zeitanfang</label>
                   <div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
-                    <input size="16" type="text" value="" readonly placeholder="yyyy-mm-dd hh:mm" id="zeitAnf" required>
+                    <input type="text" value="" readonly placeholder="yyyy-mm-dd hh:mm" id="zeitAnf" required>
                     <span class="add-on">
                       <i class="icon-remove"></i>
                     </span>
@@ -147,10 +151,10 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-auto my-1">
+                <div class="from-group col-md-3">
                   <label for="zeitEnd">Zeitende</label>
                   <div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
-                    <input size="16" type="text" value="" readonly placeholder="yyyy-mm-dd hh:mm" id="zeitEnd" required>
+                    <input type="text" value="" readonly placeholder="yyyy-mm-dd hh:mm" id="zeitEnd" required>
                     <span class="add-on">
                       <i class="icon-remove"></i>
                     </span>
@@ -172,13 +176,14 @@
                   <br>
                 </div>
               </div>
-
+              <!--Öffnet den Datetime-->
               <script type="text/javascript">
                 $(".form_datetime").datetimepicker({
                   format: "yyyy-mm-dd hh:ii",
                   autoclose: true,
                   todayBtn: true,
-                  minuteStep: 10
+                  minuteStep: 10,
+                  language: "de"
                 });
               </script>
               <button type="submit" class="btn btn-primary" onclick="eventUpdate()">Raum BUCHEN</button>
