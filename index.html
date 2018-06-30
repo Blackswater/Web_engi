@@ -1,0 +1,212 @@
+<!--
+          Team: Marcel, Raphael, Patricia, Anselm
+          Modul: ConfernceRoom Modul
+          date: 06.06.18
+          Nur zur Verwendung für das Modul: Web Engineering I Programmieraufgabe
+ -->
+<%@ page contentType="text/html; charset=UTF-8" %>
+
+  <%@ page import="com.chimerasys.User" %>
+
+    <%
+ 
+     User u = (User) session.getAttribute("user");
+ 
+     if (u == null) {
+ 
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+ 
+     }
+ 
+ %>
+
+      <!DOCTYPE html>
+      <html>
+
+      <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Conference Room Manager!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/intranet.css">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
+        <link rel="stylesheet" href="css/room_conference.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+          crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+          crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+          crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+          crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+        <script src="js/bootstrap-datetimepicker.js"></script>
+        <script src="js/roomconference.js"></script>
+      </head>
+
+      <body>
+        <!-- Kopf der seite-->
+        <div id='start'>
+          <div class="jumbotron">
+            <img src='images\dhbw_mosbach_2014.gif' id='Dhbw_Logo' alt='DHBW Logo' />
+            <h1 class="display-5">Konferenzraum</h1>
+            <p class="lead">Hier können die Konferenzräume erstellt, verwaltet und gelöscht werden</p>
+            <hr class="my-5">
+            <p>In der App Kalender finden sie alle Raumreservierungen!</p>
+            <p class="lead">
+              <a class="btn btn-primary btn-lg" href="Kalender" role="button" onclick="firmenkalender.jsp">Kalender anzeigen</a>
+            </p>
+          </div>
+
+          <div class="alert alert-danger" id="alert" ></div>
+
+          <!-- Kacheln zum buchen, editieren löschen eines Raumes-->
+          <div id='Conference_Menu'>
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Raum buchen </h5>
+                    <br>
+                    <br>
+                    <p class="card-text">Reservieren sie einen Raum!</p>
+                    <a href="#" class="btn btn-primary btn-bottom" onclick="showFormular('Conference_booking')">Buchen</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Raumreservierung editieren </h5>
+                    <br>
+                    <br>
+                    <p class="card-text">Bearbeiten sie ihre Raumreservierung!</p>
+                    <a href="#" class="btn btn-primary btn-bottom" onclick="showFormular('Conference_editRoom')">Bearbeiten</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Raumreservierung löschen </h5>
+                    <br>
+                    <br>
+                    <p class="card-text">Löschen sie ihre Raumreservierung!</p>
+                    <a href="#" class="btn btn-primary btn-bottom" onclick="showFormular('Conference_deleteRoom')">Löschen</a>
+                  </div>
+                </div>
+              </div>             
+            </div>
+          </div>
+          <script type="text/javascript">
+            function showFormular(editor) {
+              var current = document.getElementById(editor);
+              document.getElementById('Conference_booking').style.display = "none";
+              document.getElementById('Conference_deleteRoom').style.display = "none";
+              document.getElementById('Conference_editRoom').style.display = "none";
+              current.style.display = "block";
+              $('html:not(:animated), body:not(:animated)').animate({
+                scrollTop: $(current).offset().top
+              }, 500);
+            }
+          </script>
+          <!-- Forumlarfelder zum ausfüllen-->
+          <div id='Conference_booking'>
+            <form>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="betreff">Betreff</label>
+                  <input type="text" class="form-control" id="betreff" placeholder="Veranstaltung" required>
+                </div>                           
+                <div class="col-auto my-1">
+                  <label for="tags">Raum</label>
+                  <select multiple class="form-control" id="tags">
+                    
+                    </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="comment">Kommentar</label>
+                    <input type="text" class="form-control" id="comment" placenholder="Kommentar"> 
+                </div> 
+              </div>
+              <div class="form-row">
+                <div class="from-group col-md-3">
+                  <label for="zeitAnf">Zeitanfang</label>
+                  <div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
+                    <input size="16" type="text" value="" readonly placeholder="yyyy-mm-dd hh:mm" id="zeitAnf" required>
+                    <span class="add-on">
+                      <i class="icon-remove"></i>
+                    </span>
+                    <span class="add-on">
+                      <i class="icon-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-auto my-1">
+                  <label for="zeitEnd">Zeitende</label>
+                  <div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
+                    <input size="16" type="text" value="" readonly placeholder="yyyy-mm-dd hh:mm" id="zeitEnd" required>
+                    <span class="add-on">
+                      <i class="icon-remove"></i>
+                    </span>
+                    <span class="add-on">
+                      <i class="icon-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="from-group col-md-1">
+                  <label for="location">Location</label>
+                  <input type="text" class="form-control" id="location">
+                  <br>
+                </div>
+                <div class="from-group col-md-3">
+                  <label for="URL">URL</label>
+                  <input type="url" class="form-control" id="url">
+                  <br>
+                </div>
+              </div>
+
+              <script type="text/javascript">
+                $(".form_datetime").datetimepicker({
+                  format: "yyyy-mm-dd hh:ii",
+                  autoclose: true,
+                  todayBtn: true,
+                  minuteStep: 10
+                });
+              </script>
+              <button type="submit" class="btn btn-primary" onclick="eventUpdate()">Raum BUCHEN</button>
+            </form>
+          </div>
+          <div id='Conference_deleteRoom'>
+            <form>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="inputRaum">Raumname</label>
+                  <input type="text" class="form-control" id="inputRaum4" placeholder="Raum">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Raum LÖSCHEN!</button>
+            </form>
+          </div>
+          <div id='Conference_editRoom'>
+            <form>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="inputRaum">Raumname</label>
+                  <input type="text" class="form-control" id="inputRaum4" placeholder="Raum">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Raum editieren</button>
+            </form>
+          </div>
+        </div>
+      </body>
+
+      </html>

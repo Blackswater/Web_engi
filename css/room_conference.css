@@ -4,7 +4,7 @@
 
 }
 
-#Conference_Editor, #Conference_newRoom, #Conference_deleteRoom{
+#Conference_booking, #Conference_editRoom, #Conference_deleteRoom{
 
   position: relative;
   margin: 3% 2% 3% 2%;
